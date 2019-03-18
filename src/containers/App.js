@@ -20,6 +20,17 @@ class App extends Component {
     showPersons: false
   }
 
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[App.js] shouldComponentUpdate');
+    return true;
+  }
+
+  componentDidUpdate() {}
+
   static getDerivedStateFromProps(props, state) {
     console.log('[App.js] getDerivedStateFromProps', state);
     return state;
