@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import Aux from '../hoc/Aux'
+import withClass from '../hoc/withClass';
 
 
 class App extends Component {
@@ -17,6 +19,7 @@ class App extends Component {
       { id: '2', name: 'Manu', age: 29 },
       { id: '3', name: 'Stephanie', age: 26 }
     ],
+    changeCounter: 0,
     showPersons: false,
     showCockpit: true,
   }
@@ -30,7 +33,7 @@ class App extends Component {
     return true;
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   static getDerivedStateFromProps(props, state) {
     console.log('[App.js] getDerivedStateFromProps', state);
@@ -44,7 +47,7 @@ class App extends Component {
 
     const persons = [...this.state.persons];
     persons[personIndex] = person;
-    this.setState({ persons: persons })
+    this.setState((prevState, props) => { return { persons: persons, changeCounter : prevState.changeCounter + 1 } })
   }
 
   togglePersonsHandler = () => {
@@ -76,23 +79,26 @@ class App extends Component {
     }
 
     return (
-      <div className={classes.App}>
-      <button onClick={() => {
-        this.setState({showCockpit : false})
-      }}>Remove Cockpit</button>
-      {
-         this.state.showCockpit ?
-          <Cockpit 
-          title={this.props.appTitle}
-          showPersons={this.state.showPersons}
-          personsLength={this.state.persons.length}
-          click={this.togglePersonsHandler} /> : null
-      }
-        {persons}
-      </div>
+      <Aux>
+        <div className={classes.App}>
+          { this.state.changeCounter }
+          <button onClick={() => {
+            this.setState({ showCockpit: false })
+          }}>Remove Cockpit</button>
+          {
+            this.state.showCockpit ?
+              <Cockpit
+                title={this.props.appTitle}
+                showPersons={this.state.showPersons}
+                personsLength={this.state.persons.length}
+                click={this.togglePersonsHandler} /> : null
+          }
+          {persons}
+        </div>
+      </Aux>
     );
   }
 }
 
 
-export default App;
+export default withClass(App, classes.App);
