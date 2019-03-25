@@ -1,11 +1,15 @@
-import React, { useEffect, memo } from 'react';
+import React, { useEffect, memo, useRef } from 'react';
 import classes from './Cockpit.css';
 
 const cockpit = (props) => {
+    const toggleBtnRef = useRef(null);
+    
     useEffect(() =>{
       console.log('[Cockpit.js] useEffect');
+      toggleBtnRef.current.click();
+
       const timeout = setTimeout(() => {
-        alert('Saved data to cloud');
+        // alert('Saved data to cloud');
       }, 1000)
       return () => {
         clearTimeout(timeout);
@@ -30,9 +34,10 @@ const cockpit = (props) => {
         <div className={classes.Cockpit}>
             <h1>{props.title}</h1>
             <p>This is really working!</p>
-            <button
+            <button 
+                ref={toggleBtnRef}
                 className={btnClass}
-                onClick={props.click}>Switch Name</button>
+                onClick={props.login}>Switch Name</button>
         </div>
     );
 }
