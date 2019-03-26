@@ -3,6 +3,7 @@ import './Person.css';
 import withClass from '../../../hoc/withClass';
 import classes from './Person.css';
 import PropTypes from 'prop-types';
+import Aux from '../../../hoc/Aux'
 
 class Person extends Component {
 
@@ -17,7 +18,10 @@ class Person extends Component {
     }
 
     render() {
-        return (<div className="Person">
+        console.log(this.props.isAuth);
+        return (<Aux><div className="Person">
+            { this.props.isAuth ? <p>Authenticated!</p> : <p>Please Log In</p> }
+            { this.props.isAuth }
             <p onClick={this.props.click}>I'm a {this.props.name} and I am {this.props.age} years old</p>
             <p>{this.props.children}</p>
             <input
@@ -25,7 +29,7 @@ class Person extends Component {
             ref = { this.inputElementRef }
             onChange={this.props.changed} 
             value={this.props.name}></input>
-        </div>)
+        </div></Aux>)
     }
 
 }

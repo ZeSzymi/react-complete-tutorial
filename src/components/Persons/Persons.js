@@ -1,5 +1,6 @@
 import React, { Component, PureComponent } from 'react';
 import Person from './Person/Person'
+import AuthContext from '../../context/auth-context';
 
 class Persons extends PureComponent {
 
@@ -14,7 +15,7 @@ class Persons extends PureComponent {
 
     getSnapshotBeforeUpdate(prevProps, prevState) {
         console.log('[Persons.js] getSnapshotBeforeUpdate')
-        return {message : 'snapshot'};
+        return { message: 'snapshot' };
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -27,15 +28,22 @@ class Persons extends PureComponent {
 
     render() {
         console.log('[Persons.js] rendering...')
+
+
         return this.props.persons.map((person, index) => {
-        return <Person 
-        click={() => this.props.clicked(index)}
-        isAuth={props.isAuthenticated}
-        name={person.name} 
-        age={person.age}
-        key={person.id}
-        changed={event => this.props.changed(event, person.id)} />
-    })} 
+            <AuthContext.Consumer>
+                {
+                    return <Person
+                    click={() => this.props.clicked(index)}
+                    isAuth={this.props.isAuthenticated}
+                    name={person.name}
+                    age={person.age}
+                    key={person.id}
+                    changed={event => this.props.changed(event, person.id)} />
+                }
+            </AuthContext.Consumer>
+        })
+    }
 }
 
 export default Persons;
